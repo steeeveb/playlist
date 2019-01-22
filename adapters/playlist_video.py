@@ -1,0 +1,2 @@
+class MysqlPlaylistVideoRepository:
+    pass

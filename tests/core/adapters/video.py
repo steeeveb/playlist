@@ -1,6 +1,6 @@
-from unittest import TestCase, skip
+from unittest import TestCase
 
-from core.adapters import InMemoryVideoRepository, MysqlVideoRepository
+from core.adapters import InMemoryVideoRepository
 from core.models import Video
 
 
@@ -41,10 +41,3 @@ class InMemoryVideoRepositoryContractTest(TestCase, VideoRepositoryContractTest)
     def setUp(self):
         self.storage = {}
         self.repo = InMemoryVideoRepository(self.storage)
-
-
-@skip('NOT IMPLEMENTED')
-class MysqlVideoRepositoryContractTest(TestCase, VideoRepositoryContractTest):
-
-    def setUp(self):
-        self.repo = MysqlVideoRepository()

@@ -1,4 +1,4 @@
-from unittest import TestCase, skip
+from unittest import TestCase
 
 from core.adapters import InMemoryPlaylistVideoRepository
 
@@ -44,6 +44,3 @@ class InMemoryPlaylistVideoRepositoryContractTest(TestCase, PlaylistVideoReposit
         self.repo = InMemoryPlaylistVideoRepository(self.storage)
 
 
-@skip('Not implemented')
-class MysqlPlaylistVideoRepositoryContractTest(TestCase, PlaylistVideoRepositoryContractTest):
-    pass

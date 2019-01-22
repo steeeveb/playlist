@@ -1,6 +1,6 @@
-from unittest import TestCase, skip
+from unittest import TestCase
 
-from core.adapters import InMemoryPlaylistRepository, MysqlPlaylistRepository
+from core.adapters import InMemoryPlaylistRepository
 from core.models import Playlist
 
 
@@ -31,24 +31,9 @@ class PlaylistRepositoryContractTest:
         self.repo.update(Playlist(1, 'the new name of the playlist'))
         self.assertEqual([Playlist(1, 'the new name of the playlist')], self.repo.get_all())
 
-    # def test_create_video(self):
-    #     self.repo.insert(Playlist(1, 'the name of the playlist'))
-    #
-    #     self.repo.insert_video(1, 10)
-    #
-    #     self.assertEqual(, self.repo.get_all())
-
-
 
 class InMemoryPlaylistRepositoryContractTest(TestCase, PlaylistRepositoryContractTest):
 
     def setUp(self):
         self.storage = {}
         self.repo = InMemoryPlaylistRepository(self.storage)
-
-
-@skip('NOT IMPLEMENTED')
-class MysqlPlaylistRepositoryContractTest(TestCase, PlaylistRepositoryContractTest):
-
-    def setUp(self):
-        self.repo = MysqlPlaylistRepository()

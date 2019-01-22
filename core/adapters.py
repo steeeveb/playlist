@@ -31,10 +31,6 @@ class InMemoryPlaylistRepository:
         self.storage[playlist.id] = playlist
 
 
-class MysqlPlaylistRepository:
-    pass
-
-
 class InMemoryVideoRepository:
     def __init__(self, storage):
         self.storage = storage
@@ -58,10 +54,6 @@ class InMemoryVideoRepository:
         # da rivedere
         self.counter = max(self.counter + 1, video.id or 0)
         self.storage[self.counter] = Video(self.counter, video.title, video.thumbnail)
-
-
-class MysqlVideoRepository:
-    pass
 
 
 class InMemoryPlaylistVideoRepository:
