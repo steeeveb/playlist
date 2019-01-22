@@ -20,9 +20,12 @@ class GetVideosUsecase:
 
 
 class DeleteVideoUsecase:
-    def __init__(self, video_repository):
+    def __init__(self, video_repository, playlist_video_repository):
         self.video_repository = video_repository
+        self.playlist_video_repository = playlist_video_repository
+
     def execute(self, video_id):
         self.video_repository.delete(video_id)
+        self.playlist_video_repository.delete_all(video_id)
 
 

@@ -17,7 +17,7 @@ class DeletePlaylistVideoUsecase:
 
     def execute(self, playlist_id, video_id):
         self.playlist_repository.get(playlist_id)
-        self.video_playlist_repository.delete_video(playlist_id, video_id)
+        self.video_playlist_repository.delete(playlist_id, video_id)
 
 
 class GetPlaylistVideosUsecase:

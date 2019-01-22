@@ -67,10 +67,17 @@ class MysqlVideoRepository:
 class InMemoryPlaylistVideoRepository:
     def __init__(self, storage):
         self.storage = storage
+
     def get(self, playlist_id):
         return self.storage[playlist_id]
-    def delete_video(self, playlist_id, video_id):
+
+    def delete(self, playlist_id, video_id):
         self.storage.setdefault(playlist_id, []).remove(video_id)
+
+    def delete_all(self, video_id):
+        for video_ids in self.storage.values():
+            video_ids.remove(video_id)
+
     def insert_video(self, playlist_id, video_id):
         self.storage.setdefault(playlist_id, []).append(video_id)
 
