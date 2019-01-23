@@ -7,7 +7,7 @@ import json
 import socket
 
 from adapters.http_handler import ServerRequestHandler
-from core.adapters import MissingPlaylist, MissingVideo
+from core.models import MissingPlaylist, MissingVideo
 
 
 class ServerResourcesTest(TestCase):

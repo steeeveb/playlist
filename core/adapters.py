@@ -1,8 +1,4 @@
-from core.models import Playlist, Video
-
-
-class MissingPlaylist(Exception):
-    pass
+from core.models import Playlist, Video, MissingPlaylist, MissingVideo
 
 
 class InMemoryPlaylistRepository:
@@ -76,5 +72,3 @@ class InMemoryPlaylistVideoRepository:
         self.storage.setdefault(playlist_id, []).append(video_id)
 
 
-class MissingVideo(Exception):
-    pass

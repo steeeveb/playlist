@@ -3,7 +3,7 @@ import re
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler
 
-from core.adapters import MissingVideo, MissingPlaylist
+from core.models import MissingPlaylist, MissingVideo
 
 
 class ServerRequestHandler(BaseHTTPRequestHandler):

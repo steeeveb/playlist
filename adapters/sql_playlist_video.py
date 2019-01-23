@@ -29,3 +29,9 @@ class SqlPlaylistVideoRepository:
         cursor = self.connection.cursor()
         cursor.execute("DELETE FROM PLAYLIST_VIDEO WHERE VIDEO_ID=?", (video_id,))
         self.connection.commit()
+
+    def build_schema(self):
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS PLAYLIST_VIDEO(ID INTEGER PRIMARY KEY AUTOINCREMENT, PLAYLIST_ID, VIDEO_ID)")
+        self.connection.commit()

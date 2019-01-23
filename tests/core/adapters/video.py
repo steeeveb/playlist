@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from core.adapters import InMemoryVideoRepository, MissingVideo
-from core.models import Video
+from core.adapters import InMemoryVideoRepository
+from core.models import Video, MissingVideo
 
 
 class VideoRepositoryContractTest:

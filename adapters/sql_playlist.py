@@ -1,5 +1,4 @@
-from core.adapters import MissingPlaylist
-from core.models import Playlist
+from core.models import Playlist, MissingPlaylist
 
 
 class SqlPlaylistRepository:
@@ -35,4 +34,9 @@ class SqlPlaylistRepository:
     def update(self, playlist):
         cursor = self.connection.cursor()
         cursor.execute("UPDATE PLAYLIST set name=? WHERE ID=?", (playlist.name, playlist.id))
+        self.connection.commit()
+
+    def build_schema(self):
+        cursor = self.connection.cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS PLAYLIST(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT)")
         self.connection.commit()

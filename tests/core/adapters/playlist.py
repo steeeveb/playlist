@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from core.adapters import InMemoryPlaylistRepository, MissingPlaylist
-from core.models import Playlist
+from core.adapters import InMemoryPlaylistRepository
+from core.models import Playlist, MissingPlaylist
 
 
 class PlaylistRepositoryContractTest:

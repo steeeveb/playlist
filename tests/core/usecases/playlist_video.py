@@ -1,8 +1,7 @@
 from unittest import TestCase
 
-from core.adapters import InMemoryPlaylistRepository, InMemoryVideoRepository, InMemoryPlaylistVideoRepository, \
-    MissingPlaylist, MissingVideo
-from core.models import Video, Playlist
+from core.adapters import InMemoryPlaylistRepository, InMemoryVideoRepository, InMemoryPlaylistVideoRepository
+from core.models import Video, Playlist, MissingPlaylist, MissingVideo
 from core.usecases.playlist_video import PlaylistsVideosUsecases
 
 

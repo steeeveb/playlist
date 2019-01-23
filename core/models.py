@@ -10,3 +10,11 @@ class Video(NamedTuple):
 class Playlist(NamedTuple):
     id: Optional[int]
     name: str
+
+
+class MissingPlaylist(Exception):
+    pass
+
+
+class MissingVideo(Exception):
+    pass

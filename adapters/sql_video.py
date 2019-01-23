@@ -1,5 +1,4 @@
-from core.adapters import MissingVideo
-from core.models import Video
+from core.models import Video, MissingVideo
 
 
 class SqlVideoRepository:
@@ -35,4 +34,10 @@ class SqlVideoRepository:
     def delete(self, video_id):
         cursor = self.connection.cursor()
         cursor.execute("DELETE FROM VIDEO WHERE ID=?", (video_id,))
+        self.connection.commit()
+
+    def build_schema(self):
+        cursor = self.connection.cursor()
+        cursor.execute(
+            "CREATE TABLE IF NOT EXISTS VIDEO(ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE TEXT, THUMBNAIL TEXT)")
         self.connection.commit()
