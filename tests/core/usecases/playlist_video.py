@@ -24,7 +24,8 @@ class AddPlaylistVideoUsecaseTest(TestCase):
 
         usecase = PlaylistsVideosUsecases(video_repository, playlist_repository, None)
 
-        self.assertRaises(MissingVideo, lambda : usecase.add(100, 50))
+        with self.assertRaises(MissingVideo):
+            usecase.add(100, 50)
 
     def test_add_video_to_missing_playlist(self):
         playlist_repository = InMemoryPlaylistRepository({})

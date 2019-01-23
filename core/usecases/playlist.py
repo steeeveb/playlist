@@ -2,8 +2,9 @@ from core.models import Playlist
 
 
 class PlaylistsUsecases:
-    def __init__(self, playlist_repository):
+    def __init__(self, playlist_repository, playlist_video_repository):
         self.playlist_repository = playlist_repository
+        self.playlist_video_repository = playlist_video_repository
 
     def get_all(self):
         playlists = self.playlist_repository.get_all()
@@ -19,6 +20,7 @@ class PlaylistsUsecases:
 
     def delete(self, playlist_id):
         self.playlist_repository.delete(playlist_id)
+        self.playlist_video_repository.delete_playlist(playlist_id)
 
     def update(self, playlist_id, data):
         playlist = Playlist(playlist_id, data['name'])

@@ -2,11 +2,10 @@ import os
 from unittest import TestCase, skip
 import sqlite3
 
-from adapters.playlist import SqlPlaylistRepository
+from adapters.sql_playlist import SqlPlaylistRepository
 from tests.core.adapters.playlist import PlaylistRepositoryContractTest
 
 
-@skip('NOT IMPLEMENTED')
 class SqlPlaylistRepositoryContractTest(TestCase, PlaylistRepositoryContractTest):
 
     def setUp(self):

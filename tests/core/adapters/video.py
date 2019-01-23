@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from core.adapters import InMemoryVideoRepository
+from core.adapters import InMemoryVideoRepository, MissingVideo
 from core.models import Video
 
 
@@ -25,6 +25,10 @@ class VideoRepositoryContractTest:
     def test_get_a_video(self):
         self.repo.insert(Video(1, 'name1', 'thumbnail1'))
         self.assertEqual(Video(1, 'name1', 'thumbnail1'), self.repo.get(1))
+
+    def test_get_a_missing_video(self):
+        with self.assertRaises(MissingVideo):
+            self.repo.get(1)
 
     def test_delete(self):
         self.repo.insert(Video(1, 'the name of the playlist', 'thumbnail'))

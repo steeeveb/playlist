@@ -11,9 +11,8 @@ class PlaylistVideoRepositoryContractTest:
         self.repo.insert_video(1, 11)
         self.repo.insert_video(2, 5)
 
-        result = self.repo.get(1)
-
-        self.assertEqual([10, 11], result)
+        self.assertEqual([10, 11], self.repo.get(1))
+        self.assertEqual([], self.repo.get(-1))
 
     def test_delete(self):
         self.repo.insert_video(1, 10)
@@ -23,11 +22,19 @@ class PlaylistVideoRepositoryContractTest:
 
         self.assertEqual([11], self.repo.get(1))
 
+    def test_delete_playlist(self):
+        self.repo.insert_video(1, 10)
+        self.repo.insert_video(1, 11)
+
+        self.repo.delete_playlist(1)
+
+        self.assertEqual([], self.repo.get(1))
+
     def test_delete_all(self):
         self.repo.insert_video(1, 10)
         self.repo.insert_video(2, 10)
 
-        self.repo.delete_all(10)
+        self.repo.delete_video(10)
 
         self.assertEqual([], self.repo.get(1))
         self.assertEqual([], self.repo.get(2))

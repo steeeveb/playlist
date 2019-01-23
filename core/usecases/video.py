@@ -16,6 +16,6 @@ class VideosUsecases:
 
     def delete(self, video_id):
         self.video_repository.delete(video_id)
-        self.playlist_video_repository.delete_all(video_id)
+        self.playlist_video_repository.delete_video(video_id)
 
 

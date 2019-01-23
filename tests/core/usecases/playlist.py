@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from core.models import Playlist
-from core.adapters import InMemoryPlaylistRepository
+from core.adapters import InMemoryPlaylistRepository, InMemoryPlaylistVideoRepository
 from core.usecases.playlist import PlaylistsUsecases
 
 
@@ -12,7 +12,7 @@ class AddPlaylistUsecaseTest(TestCase):
         }
         playlist_repository = InMemoryPlaylistRepository({})
 
-        PlaylistsUsecases(playlist_repository).add(a_playlist)
+        PlaylistsUsecases(playlist_repository, None).add(a_playlist)
 
         self.assertEqual({1: Playlist(1, 'the name of the playlist')}, playlist_repository.storage)
 
@@ -25,7 +25,7 @@ class UpdatePlaylistUsecaseTest(TestCase):
 
         playlist_repository = InMemoryPlaylistRepository({1: Playlist(1, 'the name of the playlist')})
 
-        PlaylistsUsecases(playlist_repository).update(1, a_playlist)
+        PlaylistsUsecases(playlist_repository, None).update(1, a_playlist)
 
         self.assertEqual(playlist_repository.storage, {1: Playlist(1, 'the new name of the playlist')})
 
@@ -36,10 +36,12 @@ class DeletePlaylistUsecaseTest(TestCase):
         playlist_repository = InMemoryPlaylistRepository({
             ID_TO_DELETE: Playlist(ID_TO_DELETE, 'the name of the playlist')
         })
+        playlist_video_repository = InMemoryPlaylistVideoRepository({ID_TO_DELETE: [100]})
 
-        PlaylistsUsecases(playlist_repository).delete(ID_TO_DELETE)
+        PlaylistsUsecases(playlist_repository, playlist_video_repository).delete(ID_TO_DELETE)
 
         self.assertEqual({}, playlist_repository.storage)
+        self.assertEqual({}, playlist_video_repository.storage)
 
 
 class GetPlaylistsUsecaseTest(TestCase):
@@ -59,7 +61,7 @@ class GetPlaylistsUsecaseTest(TestCase):
             2: Playlist(2, 'another name'),
         })
 
-        self.assertEqual(expected_result, PlaylistsUsecases(playlist_repository).get_all())
+        self.assertEqual(expected_result, PlaylistsUsecases(playlist_repository, None).get_all())
 
     def test_get_playlist(self):
         PLAYLIST_ID = 1
@@ -72,6 +74,6 @@ class GetPlaylistsUsecaseTest(TestCase):
 
         playlist_repository = InMemoryPlaylistRepository({PLAYLIST_ID: Playlist(PLAYLIST_ID, 'the name of the playlist')})
 
-        result = PlaylistsUsecases(playlist_repository).get(PLAYLIST_ID)
+        result = PlaylistsUsecases(playlist_repository, None).get(PLAYLIST_ID)
 
         self.assertEqual(expected_result, result)

@@ -59,12 +59,16 @@ class InMemoryPlaylistVideoRepository:
         self.storage = storage
 
     def get(self, playlist_id):
-        return self.storage[playlist_id]
+        return self.storage.get(playlist_id, [])
 
     def delete(self, playlist_id, video_id):
         self.storage.setdefault(playlist_id, []).remove(video_id)
 
-    def delete_all(self, video_id):
+    def delete_playlist(self, playlist_id):
+        if playlist_id in self.storage:
+            del self.storage[playlist_id]
+
+    def delete_video(self, video_id):
         for video_ids in self.storage.values():
             video_ids.remove(video_id)
 

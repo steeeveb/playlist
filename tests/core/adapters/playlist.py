@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from core.adapters import InMemoryPlaylistRepository
+from core.adapters import InMemoryPlaylistRepository, MissingPlaylist
 from core.models import Playlist
 
 
@@ -10,6 +10,10 @@ class PlaylistRepositoryContractTest:
     def test_get_a_playlist(self):
         self.repo.insert(Playlist(1, 'the name of the playlist'))
         self.assertEqual(Playlist(1, 'the name of the playlist'), self.repo.get(1))
+
+    def test_get_a_missing_playlist(self):
+        with self.assertRaises(MissingPlaylist):
+            self.repo.get(1)
 
     def test_get_all_the_playlists(self):
         self.repo.insert(Playlist(1, 'the name of the playlist'))
