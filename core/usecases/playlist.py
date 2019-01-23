@@ -1,16 +1,7 @@
 from core.models import Playlist
 
 
-class AddPlaylistUsecase:
-    def __init__(self, playlist_repository):
-        self.playlist_repository = playlist_repository
-
-    def execute(self, data):
-        playlist = Playlist(None, data['name'])
-        self.playlist_repository.insert(playlist)
-
-
-class GetPlaylistsUsecase:
+class PlaylistsUsecases:
     def __init__(self, playlist_repository):
         self.playlist_repository = playlist_repository
 
@@ -22,17 +13,13 @@ class GetPlaylistsUsecase:
         playlist = self.playlist_repository.get(playlist_id)
         return {'data': {'id': playlist.id, 'name': playlist.name}}
 
+    def add(self, data):
+        playlist = Playlist(None, data['name'])
+        self.playlist_repository.insert(playlist)
 
-class DeletePlaylistUsecase:
-    def __init__(self, playlist_repository):
-        self.playlist_repository = playlist_repository
-    def execute(self, playlist_id):
+    def delete(self, playlist_id):
         self.playlist_repository.delete(playlist_id)
 
-
-class UpdatePlaylistUsecase:
-    def __init__(self, playlist_repository):
-        self.playlist_repository = playlist_repository
     def update(self, playlist_id, data):
         playlist = Playlist(playlist_id, data['name'])
         self.playlist_repository.update(playlist)

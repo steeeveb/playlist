@@ -3,7 +3,7 @@ from unittest import TestCase
 from core.adapters import InMemoryPlaylistRepository, InMemoryVideoRepository, InMemoryPlaylistVideoRepository, \
     MissingPlaylist, MissingVideo
 from core.models import Video, Playlist
-from core.usecases.playlist_video import AddPlaylistVideoUsecase, DeletePlaylistVideoUsecase, GetPlaylistVideosUsecase
+from core.usecases.playlist_video import PlaylistsVideosUsecases
 
 
 class AddPlaylistVideoUsecaseTest(TestCase):
@@ -12,9 +12,9 @@ class AddPlaylistVideoUsecaseTest(TestCase):
         playlist_repository = InMemoryPlaylistRepository({100: [Playlist(100, None)]})
         playlist_video_repository = InMemoryPlaylistVideoRepository({})
 
-        usecase = AddPlaylistVideoUsecase(video_repository, playlist_repository, playlist_video_repository)
+        usecase = PlaylistsVideosUsecases(playlist_repository, playlist_video_repository, video_repository)
 
-        usecase.execute(100, 50)
+        usecase.add(100, 50)
 
         self.assertEqual({100: [50]}, playlist_video_repository.storage)
 
@@ -22,16 +22,16 @@ class AddPlaylistVideoUsecaseTest(TestCase):
         video_repository = InMemoryVideoRepository({})
         playlist_repository = InMemoryPlaylistRepository({100: [Playlist(100, None)]})
 
-        usecase = AddPlaylistVideoUsecase(video_repository, playlist_repository, None)
+        usecase = PlaylistsVideosUsecases(video_repository, playlist_repository, None)
 
-        self.assertRaises(MissingVideo, lambda : usecase.execute(100, 50))
+        self.assertRaises(MissingVideo, lambda : usecase.add(100, 50))
 
     def test_add_video_to_missing_playlist(self):
         playlist_repository = InMemoryPlaylistRepository({})
 
-        usecase = AddPlaylistVideoUsecase(None, playlist_repository, None)
+        usecase = PlaylistsVideosUsecases(playlist_repository, None, None)
 
-        self.assertRaises(MissingPlaylist, lambda : usecase.execute(-1, 50))
+        self.assertRaises(MissingPlaylist, lambda : usecase.add(-1, 50))
 
 
 class DeletePlaylistVideoUsecaseTest(TestCase):
@@ -39,16 +39,16 @@ class DeletePlaylistVideoUsecaseTest(TestCase):
         playlist_repository = InMemoryPlaylistRepository({10: Playlist(10, 'name')})
         playlist_video_repository = InMemoryPlaylistVideoRepository({10: [1, 50]})
 
-        DeletePlaylistVideoUsecase(playlist_repository, playlist_video_repository).execute(10, 50)
+        PlaylistsVideosUsecases(playlist_repository, playlist_video_repository, None).delete(10, 50)
 
         self.assertEqual({10: [1]}, playlist_video_repository.storage)
 
     def test_delete_video_from_missing_playlist(self):
         playlist_repository = InMemoryPlaylistRepository({})
 
-        usecase = DeletePlaylistVideoUsecase(playlist_repository, None)
+        usecase = PlaylistsVideosUsecases(playlist_repository, None, None)
 
-        self.assertRaises(MissingPlaylist, lambda : usecase.execute(-1, 50))
+        self.assertRaises(MissingPlaylist, lambda : usecase.delete(-1, 50))
 
 
 class GetPlaylistVideosUsecaseTest(TestCase):
@@ -70,13 +70,13 @@ class GetPlaylistVideosUsecaseTest(TestCase):
                                                     2: Video(2, 'another title', 'another thumbnail')})
         playlist_video_repository = InMemoryPlaylistVideoRepository({10: [1, 2]})
 
-        usecase = GetPlaylistVideosUsecase(playlist_repository, playlist_video_repository, video_repository)
+        usecase = PlaylistsVideosUsecases(playlist_repository, playlist_video_repository, video_repository)
 
         self.assertEqual(expected_result, usecase.get_all(10))
 
     def test_missing_playlist(self):
         playlist_repository = InMemoryPlaylistRepository({10: Playlist(10, 'name')})
 
-        usecase = GetPlaylistVideosUsecase(playlist_repository, None, None)
+        usecase = PlaylistsVideosUsecases(playlist_repository, None, None)
 
         self.assertRaises(MissingPlaylist, lambda : usecase.get_all(-1))

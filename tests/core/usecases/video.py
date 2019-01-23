@@ -1,7 +1,7 @@
 from unittest import TestCase
 
 from core.adapters import InMemoryVideoRepository, InMemoryPlaylistVideoRepository
-from core.usecases.video import AddVideoUsecase, DeleteVideoUsecase, GetVideosUsecase
+from core.usecases.video import VideosUsecases
 from core.models import Video
 
 
@@ -12,7 +12,7 @@ class AddVideoUsecaseTest(TestCase):
             'thumbnail': 'The url of the video',
         }
         video_repository = InMemoryVideoRepository({})
-        AddVideoUsecase(video_repository).execute(a_video)
+        VideosUsecases(video_repository, None).add(a_video)
 
         self.assertEqual({1: Video(1, 'the title of the video', 'The url of the video')},
                          video_repository.storage)
@@ -25,7 +25,7 @@ class DeleteVideoUsecaseTest(TestCase):
         })
         playlist_video_repository = InMemoryPlaylistVideoRepository({})
 
-        DeleteVideoUsecase(video_repository, playlist_video_repository).execute(1)
+        VideosUsecases(video_repository, playlist_video_repository).delete(1)
 
         self.assertEqual({}, video_repository.storage)
 
@@ -35,7 +35,7 @@ class DeleteVideoUsecaseTest(TestCase):
         })
         playlist_video_repository = InMemoryPlaylistVideoRepository({10: [1], 50: [1,2]})
 
-        DeleteVideoUsecase(video_repository, playlist_video_repository).execute(1)
+        VideosUsecases(video_repository, playlist_video_repository).delete(1)
 
         self.assertEqual({}, video_repository.storage)
         self.assertEqual({10: [], 50: [2]}, playlist_video_repository.storage)
@@ -61,4 +61,4 @@ class GetVideosUsecaseTest(TestCase):
             2: Video(2, 'another title', 'another url')
         })
 
-        self.assertEqual(expected_result, GetVideosUsecase(video_repository).get())
+        self.assertEqual(expected_result, VideosUsecases(video_repository, None).get())

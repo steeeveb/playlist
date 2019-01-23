@@ -23,7 +23,6 @@ class InMemoryPlaylistRepository:
         del self.storage[playlist_id]
 
     def insert(self, playlist):
-        # da rivedere
         self.counter = max(self.counter + 1, playlist.id or 0)
         self.storage[self.counter] = Playlist(self.counter, playlist.name)
 
@@ -51,7 +50,6 @@ class InMemoryVideoRepository:
         del self.storage[video_id]
 
     def insert(self, video):
-        # da rivedere
         self.counter = max(self.counter + 1, video.id or 0)
         self.storage[self.counter] = Video(self.counter, video.title, video.thumbnail)
 
