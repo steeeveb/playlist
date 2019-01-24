@@ -7,7 +7,7 @@ class PlaylistsVideosUsecases:
     def get_all(self, playlist_id):
         self.playlist_repository.get(playlist_id)
         video_ids = self.playlist_video_repository.get(playlist_id)
-        videos = self.video_repository.get_all(*video_ids)
+        videos = self.video_repository.get_some(*video_ids)
         return {'data': [{'id': video.id, 'title': video.title, 'thumbnail': video.thumbnail} for video in videos]}
 
     def add(self, playlist_id, video_id):

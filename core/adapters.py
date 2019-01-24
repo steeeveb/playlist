@@ -31,10 +31,11 @@ class InMemoryVideoRepository:
         self.storage = storage
         self.counter = 0
 
-    def get_all(self, *video_ids):
-        if video_ids:
-            return list(v for v in self.storage.values() if v.id in video_ids)
+    def get_all(self):
         return list(self.storage.values())
+
+    def get_some(self, *video_ids):
+        return list(v for v in self.storage.values() if v.id in video_ids)
 
     def get(self, video_id):
         try:

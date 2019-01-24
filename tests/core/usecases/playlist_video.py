@@ -65,7 +65,7 @@ class GetPlaylistVideosUsecaseTest(TestCase):
             }]
         }
 
-        playlist_repository = InMemoryPlaylistRepository({10: Playlist(10, 'name')})
+        playlist_repository = InMemoryPlaylistRepository({10: Playlist(10, 'name'), 11: Playlist(11, 'name')})
         video_repository = InMemoryVideoRepository({1: Video(1, 'the title of the video', 'a thumbnail'),
                                                     2: Video(2, 'another title', 'another thumbnail')})
         playlist_video_repository = InMemoryPlaylistVideoRepository({10: [1, 2]})
@@ -73,6 +73,7 @@ class GetPlaylistVideosUsecaseTest(TestCase):
         usecase = PlaylistsVideosUsecases(playlist_repository, playlist_video_repository, video_repository)
 
         self.assertEqual(expected_result, usecase.get_all(10))
+        self.assertEqual({'data':[]}, usecase.get_all(11))
 
     def test_missing_playlist(self):
         playlist_repository = InMemoryPlaylistRepository({10: Playlist(10, 'name')})

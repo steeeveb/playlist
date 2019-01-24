@@ -12,12 +12,17 @@ class SqlVideoRepository:
         cursor.execute("INSERT INTO VIDEO(TITLE, THUMBNAIL) VALUES(%(ph)s,%(ph)s)" % self.ph, (video.title, video.thumbnail))
         self.connection.commit()
 
-    def get_all(self, *video_ids):
+    def get_all(self):
         result = []
-        if video_ids:
-            sql = "SELECT ID, TITLE, THUMBNAIL FROM VIDEO WHERE ID in (%s)" % ','.join(self.ph['ph'] for _ in video_ids)
-        else:
-            sql = "SELECT ID, TITLE, THUMBNAIL FROM VIDEO"
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT ID, TITLE, THUMBNAIL FROM VIDEO")
+        for row in cursor.fetchall():
+            result.append(Video(*row))
+        return result
+
+    def get_some(self, *video_ids):
+        result = []
+        sql = "SELECT ID, TITLE, THUMBNAIL FROM VIDEO WHERE ID in (%s)" % ','.join(self.ph['ph'] for _ in video_ids)
         cursor = self.connection.cursor()
         cursor.execute(sql, video_ids)
         for row in cursor.fetchall():

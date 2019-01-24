@@ -20,7 +20,7 @@ class VideoRepositoryContractTest:
         self.repo.insert(Video(3, 'name3', 'thumbnail3'))
         self.assertEqual([Video(1, 'name1', 'thumbnail1'),
                           Video(2, 'name2', 'thumbnail2')],
-                         self.repo.get_all(1, 2))
+                         self.repo.get_some(1, 2))
 
     def test_get_a_video(self):
         self.repo.insert(Video(1, 'name1', 'thumbnail1'))
