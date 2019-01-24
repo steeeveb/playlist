@@ -88,8 +88,9 @@ class ServerRequestHandler(BaseHTTPRequestHandler):
             self._error('Missing playlist', HTTPStatus.NOT_FOUND)
         except ValidationError:
             self._error('Validation error', HTTPStatus.BAD_REQUEST)
-        except Exception:
+        except Exception as e:
             self._error('Server Error', HTTPStatus.INTERNAL_SERVER_ERROR)
+            raise e
 
     def _error(self, msg, status):
         self.send_response(status)

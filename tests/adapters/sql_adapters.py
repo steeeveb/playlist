@@ -2,6 +2,7 @@ import os
 import sqlite3
 from unittest import TestCase
 
+from adapters.lazy_connection import LazyConnection
 from adapters.sql_playlist import SqlPlaylistRepository
 from adapters.sql_playlist_video import SqlPlaylistVideoRepository
 from adapters.sql_video import SqlVideoRepository
@@ -13,7 +14,7 @@ from tests.core.adapters.video import VideoRepositoryContractTest
 class SqlPlaylistRepositoryContractTest(TestCase, PlaylistRepositoryContractTest):
 
     def setUp(self):
-        connection = sqlite3.connect('test.db')
+        connection = LazyConnection(lambda: sqlite3.connect('test.db'))
         self.repo = SqlPlaylistRepository(connection)
         self.repo.build_schema()
 
@@ -24,7 +25,7 @@ class SqlPlaylistRepositoryContractTest(TestCase, PlaylistRepositoryContractTest
 class SqlVideoRepositoryContractTest(TestCase, VideoRepositoryContractTest):
 
     def setUp(self):
-        connection = sqlite3.connect('test.db')
+        connection = LazyConnection(lambda: sqlite3.connect('test.db'))
         self.repo = SqlVideoRepository(connection)
         self.repo.build_schema()
 
@@ -34,7 +35,7 @@ class SqlVideoRepositoryContractTest(TestCase, VideoRepositoryContractTest):
 
 class SqlPlaylistVideoRepositoryContractTest(TestCase, PlaylistVideoRepositoryContractTest):
     def setUp(self):
-        connection = sqlite3.connect('test.db')
+        connection = LazyConnection(lambda: sqlite3.connect('test.db'))
         self.repo = SqlPlaylistVideoRepository(connection)
         self.repo.build_schema()
 

@@ -4,7 +4,7 @@ from core.models import Playlist, MissingPlaylist
 class SqlPlaylistRepository:
 
     def __init__(self, connection):
-        self.connection = connection
+        self.lazy_connection = connection
 
     def insert(self, playlist):
         cursor = self.connection.cursor()
@@ -14,7 +14,8 @@ class SqlPlaylistRepository:
     def get_all(self):
         result = []
         cursor = self.connection.cursor()
-        for row in cursor.execute("SELECT ID, NAME FROM PLAYLIST"):
+        cursor.execute("SELECT ID, NAME FROM PLAYLIST")
+        for row in cursor.fetchall():
             result.append(Playlist(*row))
         return result
 
@@ -40,3 +41,7 @@ class SqlPlaylistRepository:
         cursor = self.connection.cursor()
         cursor.execute("CREATE TABLE IF NOT EXISTS PLAYLIST(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT)")
         self.connection.commit()
+
+    @property
+    def connection(self):
+        return self.lazy_connection.get()

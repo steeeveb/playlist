@@ -1,7 +1,7 @@
 class SqlPlaylistVideoRepository:
 
     def __init__(self, connection):
-        self.connection = connection
+        self.lazy_connection = connection
 
     def insert_video(self, playlist_id, video_id):
         cursor = self.connection.cursor()
@@ -11,7 +11,8 @@ class SqlPlaylistVideoRepository:
     def get(self, playlist_id):
         cursor = self.connection.cursor()
         result = []
-        for row in cursor.execute("SELECT VIDEO_ID FROM PLAYLIST_VIDEO WHERE PLAYLIST_ID=?", (playlist_id,)):
+        cursor.execute("SELECT VIDEO_ID FROM PLAYLIST_VIDEO WHERE PLAYLIST_ID=?", (playlist_id,))
+        for row in cursor.fetchall():
             result.append(*row)
         return result
 
@@ -35,3 +36,7 @@ class SqlPlaylistVideoRepository:
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS PLAYLIST_VIDEO(ID INTEGER PRIMARY KEY AUTOINCREMENT, PLAYLIST_ID, VIDEO_ID)")
         self.connection.commit()
+
+    @property
+    def connection(self):
+        return self.lazy_connection.get()

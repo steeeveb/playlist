@@ -4,7 +4,7 @@ from core.models import Video, MissingVideo
 class SqlVideoRepository:
 
     def __init__(self, connection):
-        self.connection = connection
+        self.lazy_connection = connection
 
     def insert(self, video):
         cursor = self.connection.cursor()
@@ -13,14 +13,14 @@ class SqlVideoRepository:
 
     def get_all(self, *video_ids):
         result = []
-        cursor = self.connection.cursor()
         if video_ids:
             sql = "SELECT ID, TITLE, THUMBNAIL FROM VIDEO WHERE ID in (%s)" % ','.join('?' for _ in video_ids)
-            for row in cursor.execute(sql, video_ids):
-                result.append(Video(*row))
         else:
-            for row in cursor.execute("SELECT ID, TITLE, THUMBNAIL FROM VIDEO"):
-                result.append(Video(*row))
+            sql = "SELECT ID, TITLE, THUMBNAIL FROM VIDEO"
+        cursor = self.connection.cursor()
+        cursor.execute(sql, video_ids)
+        for row in cursor.fetchall():
+            result.append(Video(*row))
         return result
 
     def get(self, video_id):
@@ -41,3 +41,7 @@ class SqlVideoRepository:
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS VIDEO(ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE TEXT, THUMBNAIL TEXT)")
         self.connection.commit()
+
+    @property
+    def connection(self):
+        return self.lazy_connection.get()

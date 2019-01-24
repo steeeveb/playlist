@@ -6,7 +6,7 @@ from core.application import Application
 
 if __name__ == '__main__':
 
-    server = HTTPServer(('', 8000), ServerRequestHandler)
+    server = HTTPServer(('0.0.0.0', 8000), ServerRequestHandler)
     server.app = Application(InMemoryPlaylistRepository({}),
                              InMemoryPlaylistVideoRepository({}),
                              InMemoryVideoRepository({}))
