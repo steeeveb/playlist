@@ -13,21 +13,17 @@ class SqlVideoRepository:
         self.connection.commit()
 
     def get_all(self):
-        result = []
         cursor = self.connection.cursor()
         cursor.execute("SELECT ID, TITLE, THUMBNAIL FROM VIDEO")
-        for row in cursor.fetchall():
-            result.append(Video(*row))
-        return result
+        return [Video(*row) for row in cursor.fetchall()]
 
     def get_some(self, *video_ids):
-        result = []
+        if not video_ids:
+            return []
         sql = "SELECT ID, TITLE, THUMBNAIL FROM VIDEO WHERE ID in (%s)" % ','.join(self.ph['ph'] for _ in video_ids)
         cursor = self.connection.cursor()
         cursor.execute(sql, video_ids)
-        for row in cursor.fetchall():
-            result.append(Video(*row))
-        return result
+        return [Video(*row) for row in cursor.fetchall()]
 
     def get(self, video_id):
         cursor = self.connection.cursor()
