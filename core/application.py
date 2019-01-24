@@ -5,7 +5,7 @@ from core.usecases.video import VideosUsecases
 
 class Application:
     def __init__(self, playlist_repository, playlist_video_repository, video_repository):
-        self.playlists_usecases = PlaylistsUsecases(playlist_repository)
+        self.playlists_usecases = PlaylistsUsecases(playlist_repository, playlist_video_repository)
         self.playlists_videos_usecases = PlaylistsVideosUsecases(playlist_repository, playlist_video_repository, video_repository)
         self.videos_usecases = VideosUsecases(video_repository, playlist_video_repository)
 
