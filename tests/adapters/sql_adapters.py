@@ -15,7 +15,7 @@ class SqlPlaylistRepositoryContractTest(TestCase, PlaylistRepositoryContractTest
 
     def setUp(self):
         connection = LazyConnection(lambda: sqlite3.connect('test.db'))
-        self.repo = SqlPlaylistRepository(connection)
+        self.repo = SqlPlaylistRepository(connection, '?')
         self.repo.build_schema()
 
     def tearDown(self):
@@ -26,7 +26,7 @@ class SqlVideoRepositoryContractTest(TestCase, VideoRepositoryContractTest):
 
     def setUp(self):
         connection = LazyConnection(lambda: sqlite3.connect('test.db'))
-        self.repo = SqlVideoRepository(connection)
+        self.repo = SqlVideoRepository(connection, '?')
         self.repo.build_schema()
 
     def tearDown(self):
@@ -36,7 +36,7 @@ class SqlVideoRepositoryContractTest(TestCase, VideoRepositoryContractTest):
 class SqlPlaylistVideoRepositoryContractTest(TestCase, PlaylistVideoRepositoryContractTest):
     def setUp(self):
         connection = LazyConnection(lambda: sqlite3.connect('test.db'))
-        self.repo = SqlPlaylistVideoRepository(connection)
+        self.repo = SqlPlaylistVideoRepository(connection, '?')
         self.repo.build_schema()
 
     def tearDown(self):

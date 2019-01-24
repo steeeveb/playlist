@@ -90,6 +90,7 @@ class ServerRequestHandler(BaseHTTPRequestHandler):
             self._error('Validation error', HTTPStatus.BAD_REQUEST)
         except Exception as e:
             self._error('Server Error', HTTPStatus.INTERNAL_SERVER_ERROR)
+            print(e)
             raise e
 
     def _error(self, msg, status):

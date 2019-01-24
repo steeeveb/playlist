@@ -20,9 +20,9 @@ if __name__ == '__main__':
     print('Starting...')
     server = ForkingHTTPServer(('0.0.0.0', 8000), ServerRequestHandler)
     connection = LazyConnection(connect)
-    playlist_repository = SqlPlaylistRepository(connection)
-    playlist_video_repository = SqlPlaylistVideoRepository(connection)
-    video_repository = SqlVideoRepository(connection)
+    playlist_repository = SqlPlaylistRepository(connection, '?')
+    playlist_video_repository = SqlPlaylistVideoRepository(connection, '?')
+    video_repository = SqlVideoRepository(connection, '?')
 
     playlist_repository.build_schema()
     playlist_video_repository.build_schema()
