@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from core.models import Playlist
+from core.models import Playlist, ValidationError
 from core.adapters import InMemoryPlaylistRepository, InMemoryPlaylistVideoRepository
 from core.usecases.playlist import PlaylistsUsecases
 
@@ -16,6 +16,12 @@ class AddPlaylistUsecaseTest(TestCase):
 
         self.assertEqual({1: Playlist(1, 'the name of the playlist')}, playlist_repository.storage)
 
+    def test_bad_data(self):
+        an_empty_playlist = {}
+
+        with self.assertRaises(ValidationError):
+            PlaylistsUsecases(None, None).add(an_empty_playlist)
+
 
 class UpdatePlaylistUsecaseTest(TestCase):
     def test_update_playlist(self):
@@ -28,6 +34,15 @@ class UpdatePlaylistUsecaseTest(TestCase):
         PlaylistsUsecases(playlist_repository, None).update(1, a_playlist)
 
         self.assertEqual(playlist_repository.storage, {1: Playlist(1, 'the new name of the playlist')})
+
+    def test_bad_data(self):
+        an_empty_playlist = {}
+        a_null_playlist = None
+
+        with self.assertRaises(ValidationError):
+            PlaylistsUsecases(None, None).update(1, an_empty_playlist)
+        with self.assertRaises(ValidationError):
+            PlaylistsUsecases(None, None).update(1, a_null_playlist)
 
 
 class DeletePlaylistUsecaseTest(TestCase):

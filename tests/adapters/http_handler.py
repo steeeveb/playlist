@@ -7,7 +7,7 @@ import json
 import socket
 
 from adapters.http_handler import ServerRequestHandler
-from core.models import MissingPlaylist, MissingVideo
+from core.models import MissingPlaylist, MissingVideo, ValidationError
 
 
 class ServerResourcesTest(TestCase):
@@ -93,6 +93,13 @@ class HttpErrorsTest(TestCase):
         self.assertEqual(HTTPStatus.NOT_FOUND, response.status)
         self.assertEqual(b'<html><body><h1>Missing video</h1></body></html>', response.read())
 
+    def test_validation_error(self):
+        connection = HTTPConnection("localhost", port=self.server_port)
+        connection.request('POST', '/videos')
+        response = connection.getresponse()
+        self.assertEqual(HTTPStatus.BAD_REQUEST, response.status)
+        self.assertEqual(b'<html><body><h1>Validation error</h1></body></html>', response.read())
+
     def test_wrong_url(self):
         connection = HTTPConnection("localhost", port=self.server_port)
         connection.request('GET', '/wrongurl')
@@ -111,6 +118,8 @@ class ErrorFakeApplication:
         raise MissingPlaylist()
     def delete_video(self, video_id):
         raise MissingVideo()
+    def add_video(self, video_id):
+        raise ValidationError()
 
 
 def get_free_port():

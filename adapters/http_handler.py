@@ -3,7 +3,7 @@ import re
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler
 
-from core.models import MissingPlaylist, MissingVideo
+from core.models import MissingPlaylist, MissingVideo, ValidationError
 
 
 class ServerRequestHandler(BaseHTTPRequestHandler):
@@ -79,7 +79,6 @@ class ServerRequestHandler(BaseHTTPRequestHandler):
         else:
             self._error('Resource not found', HTTPStatus.NOT_FOUND)
 
-
     def _handle(self, action):
         try:
             action()
@@ -87,6 +86,8 @@ class ServerRequestHandler(BaseHTTPRequestHandler):
             self._error('Missing video', HTTPStatus.NOT_FOUND)
         except MissingPlaylist:
             self._error('Missing playlist', HTTPStatus.NOT_FOUND)
+        except ValidationError:
+            self._error('Validation error', HTTPStatus.BAD_REQUEST)
         except Exception:
             self._error('Server Error', HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -96,7 +97,6 @@ class ServerRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         response_content = '<html><body><h1>' + msg + '</h1></body></html>'
         self.wfile.write(response_content.encode('utf-8'))
-
 
     def _get_data(self):
         content_length = int(self.headers['Content-Length'])

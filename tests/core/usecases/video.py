@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from core.adapters import InMemoryVideoRepository, InMemoryPlaylistVideoRepository
 from core.usecases.video import VideosUsecases
-from core.models import Video
+from core.models import Video, ValidationError
 
 
 class AddVideoUsecaseTest(TestCase):
@@ -16,6 +16,14 @@ class AddVideoUsecaseTest(TestCase):
 
         self.assertEqual({1: Video(1, 'the title of the video', 'The url of the video')},
                          video_repository.storage)
+
+    def test_bad_data(self):
+        with self.assertRaises(ValidationError):
+            an_empty_video = {}
+            VideosUsecases(None, None).add(an_empty_video)
+        with self.assertRaises(ValidationError):
+            a_null_video = None
+            VideosUsecases(None, None).add(a_null_video)
 
 
 class DeleteVideoUsecaseTest(TestCase):

@@ -18,3 +18,6 @@ class MissingPlaylist(Exception):
 
 class MissingVideo(Exception):
     pass
+
+class ValidationError(Exception):
+    pass
