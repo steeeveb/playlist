@@ -22,7 +22,7 @@ curl -X DELETE http://localhost:8000/videos/1 -H "Content-Type: application/json
 curl -X GET http://localhost:8000/playlists
 curl -X POST http://localhost:8000/playlists -d '{"name":"a playlist"}' -H "Content-Type: application/json" 
 curl -X GET http://localhost:8000/playlists/1
-curl -X UPDATE http://localhost:8000/playlists/1 -d '{"name":"a new name"}' -H "Content-Type: application/json" 
+curl -X PUT http://localhost:8000/playlists/1 -d '{"name":"a new name"}' -H "Content-Type: application/json" 
 curl -X DELETE http://localhost:8000/playlists/1 -H "Content-Type: application/json" 
 ```
 
