@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/steeeveb/playlist.svg?branch=master)](https://travis-ci.org/steeeveb/playlist)
+
 ###BASIC USAGE
 
 To build and run it:
