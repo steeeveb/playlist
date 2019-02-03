@@ -50,9 +50,9 @@ class SqlPlaylistVideoRepositoryContractTest(TestCase, PlaylistVideoRepositoryCo
 def setupConnection():
     config = {
         'user': 'root',
-        'password': 'root',
+        'password': '',
         'host': 'localhost',
-        'port': '32000',
+        'port': '3306',
         'database': 'playlist'
     }
 
