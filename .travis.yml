@@ -4,3 +4,5 @@ python:
 script:
 - MYSQLTESTS=1 python -m unittest discover -p '*'
 services: mysql
+before_install:
+- mysql -e 'CREATE DATABASE playlist;'
