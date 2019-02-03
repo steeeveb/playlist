@@ -40,7 +40,6 @@ class SqlPlaylistRepository:
 
     def build_schema(self):
         cursor = self.connection.cursor()
-        cursor.execute("CREATE TABLE IF NOT EXISTS PLAYLIST(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT)")
         self.connection.commit()
 
     @property

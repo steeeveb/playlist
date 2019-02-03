@@ -16,7 +16,8 @@ class SqlPlaylistRepositoryContractTest(TestCase, PlaylistRepositoryContractTest
     def setUp(self):
         connection = LazyConnection(lambda: sqlite3.connect('test.db'))
         self.repo = SqlPlaylistRepository(connection, '?')
-        self.repo.build_schema()
+        cursor = connection.get().cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS PLAYLIST(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT)")
 
     def tearDown(self):
         os.remove('test.db')
@@ -27,7 +28,8 @@ class SqlVideoRepositoryContractTest(TestCase, VideoRepositoryContractTest):
     def setUp(self):
         connection = LazyConnection(lambda: sqlite3.connect('test.db'))
         self.repo = SqlVideoRepository(connection, '?')
-        self.repo.build_schema()
+        cursor = connection.get().cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS VIDEO(ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE TEXT, THUMBNAIL TEXT)")
 
     def tearDown(self):
         os.remove('test.db')
@@ -37,7 +39,8 @@ class SqlPlaylistVideoRepositoryContractTest(TestCase, PlaylistVideoRepositoryCo
     def setUp(self):
         connection = LazyConnection(lambda: sqlite3.connect('test.db'))
         self.repo = SqlPlaylistVideoRepository(connection, '?')
-        self.repo.build_schema()
+        cursor = connection.get().cursor()
+        cursor.execute("CREATE TABLE IF NOT EXISTS PLAYLIST_VIDEO(ID INTEGER PRIMARY KEY AUTOINCREMENT, PLAYLIST_ID, VIDEO_ID)")
 
     def tearDown(self):
         os.remove('test.db')

@@ -38,12 +38,6 @@ class SqlVideoRepository:
         cursor.execute("DELETE FROM VIDEO WHERE ID=%(ph)s" % self.ph, (video_id,))
         self.connection.commit()
 
-    def build_schema(self):
-        cursor = self.connection.cursor()
-        cursor.execute(
-            "CREATE TABLE IF NOT EXISTS VIDEO(ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE TEXT, THUMBNAIL TEXT)")
-        self.connection.commit()
-
     @property
     def connection(self):
         return self.lazy_connection.get()

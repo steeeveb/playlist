@@ -24,9 +24,10 @@ if __name__ == '__main__':
     playlist_video_repository = SqlPlaylistVideoRepository(connection, '?')
     video_repository = SqlVideoRepository(connection, '?')
 
-    playlist_repository.build_schema()
-    playlist_video_repository.build_schema()
-    video_repository.build_schema()
+    cursor = connection.get().cursor()
+    cursor.execute("CREATE TABLE IF NOT EXISTS PLAYLIST(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS PLAYLIST_VIDEO(ID INTEGER PRIMARY KEY AUTOINCREMENT, PLAYLIST_ID, VIDEO_ID)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS VIDEO(ID INTEGER PRIMARY KEY AUTOINCREMENT, TITLE TEXT, THUMBNAIL TEXT)")
 
     server.app = Application(playlist_repository, playlist_video_repository, video_repository)
     server.serve_forever()
